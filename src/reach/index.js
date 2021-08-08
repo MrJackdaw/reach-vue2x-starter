@@ -25,6 +25,10 @@ export async function connectToAlgorand() {
   return await AlgoSigner.accounts({ ledger });
 }
 
+export async function connectToReach(addr) {
+  return await Reach.connectAccount({ addr, AlgoSigner });
+}
+
 /**
  * Copy provided string to clipboard (if permissions available). Returns
  * boolean indicating success/failure of clipboard write.
