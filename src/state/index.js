@@ -22,7 +22,9 @@ const AppStore = createState({
   globalCount: 0,
 
   // Additional helper properties
+  accountsList: [],
   assets: [],
+  balance: 0,
   error: null,
   loading: false,
   reachAcct: null,
