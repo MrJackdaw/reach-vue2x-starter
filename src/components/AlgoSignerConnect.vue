@@ -1,11 +1,6 @@
 <template>
   <!-- Connection details -->
   <section class="connect column">
-    <!-- Create connection/cohort -->
-    <h3>
-      Welcome! - <code><pre>AlgoSignerConnect.vue</pre></code>
-    </h3>
-
     <!-- No AlgoSigner notice -->
     <div v-if="!hasAlgoSigner" class="algosigner-notice">
       <p class="list-item list-item--label error--text">
@@ -16,8 +11,9 @@
           href="https://chrome.google.com/webstore/detail/algosigner/kmmolakhbgdlpkjkcjkebenjheonagdm"
           target="_blank"
           rel="noopener noreferrer"
-          ><b>AlgoSigner</b></a
         >
+          <b>AlgoSigner</b>
+        </a>
         is a non-custodial blockchain wallet. It allows you to interact with
         Algorand dApps, currently available on Chrome and Chrome-like (e.g.
         Brave) browsers.
@@ -29,7 +25,7 @@
     </div>
 
     <!-- List of AlgoSigner accounts -->
-    <template v-else-if="accountsList.length">
+    <template v-else-if="accountsList.length && !loading">
       <h3 class="h4 primary-light--text">Please select an account:</h3>
 
       <div
@@ -42,6 +38,11 @@
         <span class="hash">{{ truncateAccountString(a.address) }}</span>
       </div>
     </template>
+
+    <!-- List of AlgoSigner accounts -->
+    <p v-else-if="accountsList.length && loading">
+      {{ msg }}
+    </p>
 
     <!-- "Connect" Button -->
     <button
@@ -77,6 +78,7 @@ export default {
     error: null,
     hasAlgoSigner: Boolean(AlgoSigner),
     msg: null,
+    loading: false,
     unsubscribe: null,
   }),
 
@@ -84,9 +86,8 @@ export default {
     // Connect to Global App State
     this.unsubscribe = AppStore.subscribe(this.onAppState);
 
-    // Check for AlgoSigner
+    // Set initial state if AlgoSigner is supported
     if (this.hasAlgoSigner) {
-      // Set initial state and trigger AlgoSigner popup.
       return this.onAppState(AppStore.getState());
     }
 
@@ -104,6 +105,7 @@ export default {
 
       try {
         const accounts = await connectToAlgorand();
+        AppStore.multiple(setLoading());
 
         switch (accounts.length) {
           case 0:
@@ -159,6 +161,7 @@ export default {
     onAppState(state) {
       this.error = state.error;
       this.msg = state.msg;
+      this.loading = state.loading;
     },
 
     /** UI Helper */

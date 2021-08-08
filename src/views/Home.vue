@@ -2,15 +2,23 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
 
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-
-    <h2>Global Application State - <code>Home.vue</code></h2>
+    <h2>Vue2x + Reach Starter - <code>Home.vue</code></h2>
 
     <p>
-      This application's global state instance has a
-      <b><code>globalCount</code></b> property, which is shown below. The value
-      will update when the state is changed. Use the <b>Global Count</b> button
-      in the <code>HelloWorld</code> component above to change it.
+      This is an app scaffold for <b>Vue 2</b> and <b>Reach</b>. It allows you
+      to quickly get started on a Vue2x DApp.
+    </p>
+
+    <hr />
+
+    <h4>Global App State</h4>
+
+    <p>
+      This application comes with a global state instance. The state has a
+      <b><code>globalCount</code></b> property, which is demonstrated below. Use
+      the <b>Global Count</b> button in the <code>HelloWorld</code> component
+      above to update the value globally, and use the router to see it reflected
+      on any other subscribed component or page.
     </p>
 
     <p><b>Global Count:</b> {{ count }}</p>
@@ -20,27 +28,21 @@
     </p>
 
     <button @click.prevent="resetAppStore">Reset State</button>
-    <algo-signer-connect />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 import AppStore, { incGlobalCount } from "../state";
-import AlgoSignerConnect from "@/components/AlgoSignerConnect.vue";
 
 export default {
   name: "Home",
-  components: {
-    AlgoSignerConnect,
-    HelloWorld,
-  },
 
   data: () => ({ count: 0, unsubscribe: null }),
 
   mounted() {
     this.unsubscribe = AppStore.subscribe(this.onAppState);
+    this.onAppState(AppStore.getState());
   },
 
   beforeUnmount() {

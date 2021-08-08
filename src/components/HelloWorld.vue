@@ -3,7 +3,6 @@
     <h1>
       <code><pre>HelloWorld.vue</pre></code>
     </h1>
-    <h4>{{ msg }}</h4>
 
     <p>
       <a href="https://vuejs.org" target="_blank">Vue 2 Documentation</a>
@@ -43,6 +42,7 @@ export default {
 
   mounted() {
     this.unsubscribe = AppStore.subscribe(this.onAppState);
+    this.onAppState(AppStore.getState(), ["globalCount"]);
   },
 
   beforeUnmount() {
