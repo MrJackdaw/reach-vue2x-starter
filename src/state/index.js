@@ -1,4 +1,4 @@
-import createState from "./application-state";
+import createState from "@jackcom/raphsducks";
 
 /**
  * Global application store. The object should be your initial global state;
