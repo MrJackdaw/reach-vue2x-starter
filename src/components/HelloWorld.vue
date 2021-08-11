@@ -19,7 +19,7 @@
     </button>
 
     <button type="button" @click="incGlobalCount">
-      <b>Global count</b> is: {{ globalCount }}
+      <b>Global count</b> is: {{ store.globalCount }}
     </button>
     <p>
       Edit
@@ -31,32 +31,26 @@
 </template>
 
 <script setup>
-import AppStore, { incGlobalCount } from "../state";
+import { incGlobalCount } from "../state";
+import GlobalStateMixin from "../mixins/GlobalState.mixin";
 
 export default {
   name: "HelloWorld",
 
+  mixins: [GlobalStateMixin],
+
   props: { msg: String },
 
-  data: () => ({ count: 0, globalCount: 0 }),
+  data: () => ({
+    // Local component counter
+    count: 0,
 
-  mounted() {
-    this.unsubscribe = AppStore.subscribe(this.onAppState);
-    this.onAppState(AppStore.getState(), ["globalCount"]);
-  },
-
-  beforeUnmount() {
-    this.unsubscribe();
-  },
+    // A list of keys we want to watch (see src/state/index)
+    stateKeys: ["globalCount"],
+  }),
 
   methods: {
     incGlobalCount,
-
-    onAppState({ globalCount }, keys) {
-      if (keys.includes("globalCount")) {
-        this.globalCount = globalCount;
-      }
-    },
   },
 };
 </script>
