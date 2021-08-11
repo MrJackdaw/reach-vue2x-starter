@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@jackcom/raphsducks": "^1.0.4",
-    "@reach-sh/stdlib": "^0.1.3-rc.4",
+    "@reach-sh/stdlib": "^0.1.3-rc.5",
     "core-js": "^3.6.5",
     "material-design-icons": "^3.0.1",
     "register-service-worker": "^1.7.1",
